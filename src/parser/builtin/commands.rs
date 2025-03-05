@@ -10,7 +10,7 @@ use crate::parser;
 
 use crossterm::{
     execute,
-    style::{Color, Print, SetForegroundColor, ResetColor, SetAttribute, Attribute},
+    style::{Color, Print, SetForegroundColor, ResetColor},
 };
 
 
