@@ -5,7 +5,7 @@ use std::path::Path;
 use std::env;
 use std::process;
 use std::io;
-
+use colored::Colorize;
 use crate::parser;
 
 use crossterm::{
@@ -71,32 +71,22 @@ pub fn builtin_exit(args: Vec<String>) {
 
 pub fn builtin_if(mut args: Vec<String>) {
     if args.len() < 4 {
-        let _ = execute!(io::stdout(),
-            SetForegroundColor(Color::Red),
-            Print("E: "),
-            ResetColor);
+        println!("if: {}: Too few arguments. ", "error".red().bold());
 
-        println!("Too few arguments. ");
+        println!("\nif (built-in command) v0.1.0");
+        println!();
+        println!("{}: ", "Usage".cyan().bold());
+        println!("\t{} expr1 <condition> expr2 (command)", "if".bold());
 
-        println!("\nif(built-in) v0.0.1");
-        println!("Built-in in Cubesh");
-        println!("Usage:");
-        let _ = execute!(io::stdout(),
-            SetAttribute(Attribute::Bold),
-            Print("if "),
-            SetAttribute(Attribute::Reset));
+        println!("{}:", "Condition operators".cyan().bold());
+        println!("\t==\tequals");
+        println!("\t!=\tnot equals");
 
-        println!("expr1 <condition> expr2 (command)");
-        
-        println!("Condition:");
-        println!("==    equals");
-        println!("!=    not equals");
-
-        println!("Example:");
-        println!("export HELLO=test\nif $HELLO == test echo You can see me\n");
-        println!("export HELLO=test\nif $HELLO == hi echo You can't see me\n");
-        println!("export HELLO=test\nif $HELLO != hi echo You can see me\n");
-        println!("export HELLO=test\nif $HELLO != test echo You can't see me\n");
+        println!("{}:", "Example".cyan().bold());
+        println!("\texport HELLO=test\n\tif $HELLO == test echo You can see me\n");
+        println!("\texport HELLO=test\n\tif $HELLO == hi echo You CANNOT see me\n");
+        println!("\texport HELLO=test\n\tif $HELLO != hi echo You can see me\n");
+        println!("\texport HELLO=test\n\tif $HELLO != test echo You CANNOT see me\n");
 
     } else {
         if args[1] == "==" { // equal

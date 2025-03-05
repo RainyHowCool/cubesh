@@ -1,6 +1,6 @@
 // exec.rs
-#[cfg(unix)]
-
+// This file will run the outer programs.
+use colored::Colorize;
 use std::os::unix::process::ExitStatusExt;
 use std::process::{ExitStatus, Command};
 
@@ -9,7 +9,7 @@ pub fn exec(name: String, arg: Vec<String>) {
         .args(arg)
         .status()
         .unwrap_or_else(|_| {
-            println!("cubesh: {}: Command not found.", &name);
+            println!("cubesh: {}: Command \"{}\" not found.", "error".red().bold(), &name);
             ExitStatus::from_raw(0)
         });
 }
