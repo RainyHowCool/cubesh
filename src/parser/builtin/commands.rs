@@ -73,10 +73,10 @@ pub fn builtin_if(mut args: Vec<String>) {
     if args.len() < 4 {
         println!("if: {}: Too few arguments. ", "error".red().bold());
 
-        println!("\nif (built-in command) v0.1.0");
+        println!("\n{}", "if (built-in command) v0.1.0".bold());
         println!();
         println!("{}: ", "Usage".cyan().bold());
-        println!("\t{} expr1 <condition> expr2 (command)", "if".bold());
+        println!("\tif expr1 <condition> expr2 (command)");
 
         println!("{}:", "Condition operators".cyan().bold());
         println!("\t==\tequals");
