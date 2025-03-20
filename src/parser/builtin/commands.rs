@@ -1,24 +1,23 @@
 // builtin/commands.rs
 // Serve for built-in commands functions
 
-use std::path::Path;
-use std::env;
-use std::process;
-use std::io;
-use colored::Colorize;
 use crate::parser;
+use colored::Colorize;
+use std::env;
+use std::io;
+use std::path::Path;
+use std::process;
 
 use crossterm::{
     execute,
-    style::{Color, Print, SetForegroundColor, ResetColor},
+    style::{Color, Print, ResetColor, SetForegroundColor},
 };
-
 
 pub fn builtin_echo(args: Vec<String>) {
     for arg in args.iter() {
-        print!("{} ",arg);
+        print!("{} ", arg);
     }
-    
+
     println!("");
 }
 
@@ -32,12 +31,10 @@ pub fn builtin_cd(args: Vec<String>) {
         let _ = match env::var("HOME") {
             Ok(home_path) => {
                 let _ = env::set_current_dir(Path::new(&home_path));
-            },
+            }
             Err(_) => {
                 let _ = env::set_current_dir(Path::new("/"));
-                unsafe {
-                    env::set_var("PWD", "/")
-                }
+                unsafe { env::set_var("PWD", "/") }
             }
         };
     }
@@ -55,7 +52,6 @@ pub fn builtin_export(args: Vec<String>) {
             println!("{}={}", key, value);
         }
     }
-
 }
 
 pub fn builtin_exit(args: Vec<String>) {
@@ -64,7 +60,7 @@ pub fn builtin_exit(args: Vec<String>) {
     } else {
         match args[0].parse::<i32>() {
             Ok(errorlevel) => process::exit(errorlevel),
-            Err(_) => process::exit(0)
+            Err(_) => process::exit(0),
         }
     }
 }
@@ -87,9 +83,9 @@ pub fn builtin_if(mut args: Vec<String>) {
         println!("\texport HELLO=test\n\tif $HELLO == hi echo You CANNOT see me\n");
         println!("\texport HELLO=test\n\tif $HELLO != hi echo You can see me\n");
         println!("\texport HELLO=test\n\tif $HELLO != test echo You CANNOT see me\n");
-
     } else {
-        if args[1] == "==" { // equal
+        if args[1] == "==" {
+            // equal
             if args[0] == args[2] {
                 args.remove(2);
                 args.remove(1);
@@ -106,10 +102,12 @@ pub fn builtin_if(mut args: Vec<String>) {
                 parser::shell_exec(&args.join(" "));
             }
         } else {
-            let _ = execute!(io::stdout(),
+            let _ = execute!(
+                io::stdout(),
                 SetForegroundColor(Color::Red),
                 Print("E: "),
-                ResetColor);
+                ResetColor
+            );
 
             println!("Not a vaild codition: {}", args[1]);
         }

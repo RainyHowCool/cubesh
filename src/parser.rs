@@ -2,19 +2,20 @@
 use regex::Regex;
 use std::env;
 
-mod exec;
 mod builtin;
+mod exec;
 
 struct Command {
     name: String,
-    arg: Vec<String>
+    arg: Vec<String>,
 }
 
 impl Command {
-    fn new(nameset: String, argset: Vec<String>) -> Self { // Init Data
+    fn new(nameset: String, argset: Vec<String>) -> Self {
+        // Init Data
         Self {
             name: nameset,
-            arg: argset
+            arg: argset,
         }
     }
 }
@@ -22,8 +23,10 @@ impl Command {
 fn split_one_command(input: String) -> Command {
     let mut cmdlist: Vec<String> = split_special(input, ' ');
 
-    Command::new(cmdlist[0].clone(),
-        {cmdlist.remove(0); cmdlist})
+    Command::new(cmdlist[0].clone(), {
+        cmdlist.remove(0);
+        cmdlist
+    })
 }
 
 fn split_commands(input: String) -> Vec<Command> {
@@ -44,23 +47,26 @@ fn exec_command(cmd: &Command) {
     }
 }
 
-fn split_special(input: String, delimiter: char) -> Vec<String> { // Special Split
-    let pattern = format!(r#"([^{}]+)|("[^"]*")"#, delimiter);     
+fn split_special(input: String, delimiter: char) -> Vec<String> {
+    // Special Split
+    let pattern = format!(r#"([^{}]+)|("[^"]*")"#, delimiter);
     let re = Regex::new(&pattern).unwrap();
 
     re.captures_iter(&input)
         .filter_map(|cap| {
-        cap.get(1).or(cap.get(2)).map(|m|
-        {
-            let mut tmp = m.as_str().to_string();
-            if tmp.chars().next() == Some('$') {
-                tmp.remove(0);
-                tmp = match env::var(tmp) {
-                    Ok(value) => value,
-                    Err(_) => "".to_string()
-                };
-            }
-            tmp})}).collect() // Return Value
+            cap.get(1).or(cap.get(2)).map(|m| {
+                let mut tmp = m.as_str().to_string();
+                if tmp.chars().next() == Some('$') {
+                    tmp.remove(0);
+                    tmp = match env::var(tmp) {
+                        Ok(value) => value,
+                        Err(_) => "".to_string(),
+                    };
+                }
+                tmp
+            })
+        })
+        .collect() // Return Value
 }
 
 pub fn shell_exec(input: &str) {
