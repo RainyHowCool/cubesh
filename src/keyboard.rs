@@ -112,7 +112,7 @@ fn list_directory<P: AsRef<Path>>(path: P) -> io::Result<()> {
 
     // 移动到下一行以开始打印
     // execute!(io::stdout(), MoveToNextLine(1))?;
-    println!("");
+    println!();
     print!("\r   \r");
     let _ = io::stdout().flush();
 
@@ -141,8 +141,5 @@ fn list_directory<P: AsRef<Path>>(path: P) -> io::Result<()> {
         }
     }
 
-    // Print the prompt
-    print!("\r$ ");
-    let _ = io::stdout().flush();
     Ok(())
 }
