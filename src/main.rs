@@ -1,13 +1,13 @@
-use std::io;
-use std::io::Write;
-
 mod keyboard;
 mod parser;
+use colored::Colorize;
+use std::io;
+use std::io::Write;
 
 fn main() {
     loop {
         // 1. Put Prompt
-        print!("$ ");
+        print!("{} $ ", "cubesh".green().bold());
         let _ = io::stdout().flush(); // Flush buffer or can't show prompt
 
         // 2. Get User Input
