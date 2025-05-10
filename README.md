@@ -2,8 +2,8 @@
 [English](README.md) [简体中文](README.zh_CN.md)
 1. A powerful shell written in Rust.🎉
 2. Simplify in one line.💪
-3. Source code written by a 13-year-old developer.😰
-4. Memory Safe.😊
+3. Source code written by a 13-year-old developer(and a 14-year-old developer).😰
+4. Memory Safe.😱😊
 
 # Build it
 1. Install Rust and Cargo;
